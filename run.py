@@ -21,4 +21,5 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', str(DEFAULT_PORT)))
     if port == 0:
         port = DEFAULT_PORT
-    app.run(port=port)
+    host = '0.0.0.0'
+    app.run(port=port, host=host)
