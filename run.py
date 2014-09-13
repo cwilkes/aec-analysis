@@ -1,6 +1,9 @@
 from flask import Flask
-app = Flask(__name__)
 from flask import request
+import os
+
+app = Flask(__name__)
+DEFAULT_PORT = 5000
 
 @app.route("/")
 def hello():
@@ -15,4 +18,7 @@ def post():
 
 
 if __name__ == '__main__':
-    app.run()
+    port = int(os.getenv('PORT', str(DEFAULT_PORT)))
+    if port == 0:
+        port = DEFAULT_PORT
+    app.run(port=port)
