@@ -18,7 +18,7 @@ def post():
 
 
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', str(DEFAULT_PORT)))
+    port = int(os.environ.get('PORT', str(DEFAULT_PORT)))
     if port == 0:
         port = DEFAULT_PORT
     app.run(port=port)
