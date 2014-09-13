@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request, render_template
+from flask import request, render_template, send_file
 from flask.ext.socketio import SocketIO, emit
 import os
 
@@ -9,9 +9,19 @@ DEFAULT_PORT = 5000
 
 socketio = SocketIO(app)
 
-@app.route("/")
-def hello():
+@app.route('/')
+def index():
     return render_template('test.html')
+
+
+@app.route('/2')
+def index2():
+    return render_template('test2.html')
+
+
+@app.route('/socket.io')
+def return_socketiojs():
+    return send_file('static/js/socket.io-1.1.0.js')
 
 
 @app.route("/", methods=['POST'])
@@ -19,10 +29,6 @@ def post():
     d = request.data
     print 'got', d
     return d
-
-@app.route('/t')
-def index():
-    return render_template('test.html')
 
 @socketio.on('my event', namespace='/test')
 def test_message(message):
@@ -46,4 +52,5 @@ if __name__ == '__main__':
     if port == 0:
         port = DEFAULT_PORT
     host = '0.0.0.0'
+    app.debug = len(os.environ.get('DEBUG', '')) != 0
     socketio.run(app, port=port, host=host)
