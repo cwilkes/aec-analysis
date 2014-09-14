@@ -99,7 +99,52 @@
         stats.domElement.style.top = '0px';
         container.appendChild(stats.domElement);
 
+ // GUI for interacting with data
 
+        gui = new dat.GUI({ autoPlace: false });
+
+        var dgContainer = document.getElementById('datguiContainer');
+        dgContainer.appendChild(gui.domElement);
+
+        parameters =
+        {
+            analysis: 1.0,
+            previewtype: 'Mesh',
+            meshtype: 'Solid'
+        };
+
+          // var currentFreq = gui.add( parameters, 'analysis' ).min(1).max(analysiscount).step(1).name('AnalysisScrubber').listen();
+        // currentFreq.onChange(function(value)
+        //                {   updatePoints(value-1, axialData);    });
+
+        var previewType = gui.add(parameters, 'previewtype', [ 'Mesh', 'Nodes', 'Both' ]).name('Preview Type').listen();
+        previewType.onChange(function () {
+            if (parameters.previewtype === 'Mesh') {
+                facesys.visible = true;
+                particlesys.visible = false;
+            } else if (parameters.previewtype === 'Nodes') {
+                facesys.visible = false;
+                particlesys.visible = true;
+            } else if (parameters.previewtype === 'Both') {
+                facesys.visible = true;
+                particlesys.visible = true;
+            }
+            renderer.render(scene, camera);
+        });
+
+        var meshType = gui.add(parameters, 'meshtype', [ 'Solid', 'Wireframe' ]).name('Mesh Display').listen();
+        meshType.onChange(function () {
+            if (parameters.meshtype === 'Solid') {
+                facesys.material.setValues({ wireframe: false });
+            } else if (parameters.meshtype === 'Wireframe') {
+                facesys.material.setValues({ wireframe: true });
+            }
+            renderer.render(scene, camera);
+        });
+
+        gui.open();
+
+        
     }
 
     function clearScene() {
@@ -113,8 +158,10 @@
         if (typeof particlegeom.vertices === 'undefined') {
             return;
         }
-        particlegeom.vertices.clear();
-        console.log("particlegeom.vertices.length: " +  particlegeom.vertices.length);
+       particlegeom = new THREE.Geometry();
+        bargeom = new THREE.Geometry();
+        facegeom = new THREE.Geometry();
+        // console.log("particlegeom.vertices.length: " +  particlegeom.vertices.length);
     };
 
     initCamera();
@@ -288,51 +335,8 @@
         camera.lookAt(scene.position);
 
 
-        // GUI for interacting with data
-
-        gui = new dat.GUI({ autoPlace: false });
-
-        var dgContainer = document.getElementById('datguiContainer');
-        dgContainer.appendChild(gui.domElement);
-
-        parameters =
-        {
-            analysis: 1.0,
-            previewtype: 'Mesh',
-            meshtype: 'Solid'
-        };
 
 
-        // var currentFreq = gui.add( parameters, 'analysis' ).min(1).max(analysiscount).step(1).name('AnalysisScrubber').listen();
-        // currentFreq.onChange(function(value)
-        //                {   updatePoints(value-1, axialData);    });
-
-        var previewType = gui.add(parameters, 'previewtype', [ 'Mesh', 'Nodes', 'Both' ]).name('Preview Type').listen();
-        previewType.onChange(function () {
-            if (parameters.previewtype === 'Mesh') {
-                facesys.visible = true;
-                particlesys.visible = false;
-            } else if (parameters.previewtype === 'Nodes') {
-                facesys.visible = false;
-                particlesys.visible = true;
-            } else if (parameters.previewtype === 'Both') {
-                facesys.visible = true;
-                particlesys.visible = true;
-            }
-            renderer.render(scene, camera);
-        });
-
-        var meshType = gui.add(parameters, 'meshtype', [ 'Solid', 'Wireframe' ]).name('Mesh Display').listen();
-        meshType.onChange(function () {
-            if (parameters.meshtype === 'Solid') {
-                facesys.material.setValues({ wireframe: false });
-            } else if (parameters.meshtype === 'Wireframe') {
-                facesys.material.setValues({ wireframe: true });
-            }
-            renderer.render(scene, camera);
-        });
-
-        gui.open();
 
 
         //
