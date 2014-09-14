@@ -208,8 +208,8 @@ function load_data(nodeData, barData, elemData, defData, axialData) {
         + ", elemDataLen: " + elemData.length + ", defData: " + defData.length + ", axialData: " + axialData.length);
 
     // extract max and mins
-    var mindeform = defData[defData.length - 1][0];
-    var maxdeform = defData[defData.length - 1][1];
+    // var mindeform = defData[defData.length - 1][0];
+    var maxdeform = defData[defData.length - 1][0];
     var minaxial = axialData[axialData.length - 1][0];
     var maxaxial = axialData[axialData.length - 1][1];
 

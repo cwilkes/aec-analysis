@@ -27,9 +27,9 @@ def index_demo():
     return render_template('app.html')
 
 
-@app.route('/app')
-def three_g_app():
-    return render_template('app.html')
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
 
 
 @app.route('/api/<channel>', methods=['POST',])
