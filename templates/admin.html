@@ -5,21 +5,41 @@
     <title>Admin made</title>
 </head>
 <body>
+<p>Create labels</p>
 <form method="POST" action="/admin/labels">
-<table border="1">
-    {% for dt in data_keys %}
-    <tr>
-        <td>{{dt}}</td>
-        {% for tag in data_keys[dt] %}
+    <table border="1">
+        {% for dt in data_keys %}
+        <tr>
+            <td>{{dt}}</td>
+            {% for tag in data_keys[dt] %}
             <td><input type="radio" name="{{dt}}-tag" value="{{tag}}">{{tag}}</td>
+            {% endfor %}
+        </tr>
         {% endfor %}
-    </tr>
-    {% endfor %}
-</table>
+    </table>
     Input Label: <input type="text" name="input_label">
     <br>
     <input type="submit"/>
-    </form>
+</form>
+
+<p>Select labels</p>
+<form method="POST" action="/admin/labels_select">
+    <table border="1">
+        {% for dt in data_keys %}
+        <tr>
+            <td>{{dt}}</td>
+            {% for tag in data_keys[dt] %}
+            <td><input type="radio" name="{{dt}}-tag" value="{{tag}}">{{tag}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    Input Label: <input type="text" name="input_label">
+    <br>
+    <input type="submit"/>
+</form>
+
+
 </div>
 </body>
 </html>

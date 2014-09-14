@@ -20,7 +20,7 @@ def get_data(data_type, tag, hash_id):
 
 def add_label(label, tags):
     log.info('Adding %s : %s' % (label, tags))
-    redis_client.set('/labels/%s' % (label, repr(tags)))
+    redis_client.set('/labels/%s' % (label, ), repr(tags))
 
 
 def get_data_keys(data_type=None, tag=None):

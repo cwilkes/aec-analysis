@@ -31,12 +31,17 @@ def admin():
     keys = services.get_data_keys()
     return render_template('admin.html', data_keys=keys)
 
+@app.route('/admin/labels_select', methods=['POST',])
+def admin_label_select():
+    pass
+
 @app.route('/admin/labels', methods=['POST',])
 def admin_label_change():
-    log.info('Form: %s : %s' % (request.form, request.form.keys()))
-    services.add_label(request.form['input_label'],
-                       dict(nodes=request.form['nodes-tag'], bars=request.form['bars-tag'],
-                            force_nodes=request.form['force_nodes-tag'], force_bars=request.form['force_bars_tag']))
+    label = str(request.form['input_label'])
+    data = {'nodes': str(request.form['nodes-tag']), 'bars': str(request.form['bars-tag']),
+            'force_nodes': str(request.form['force_nodes-tag']), 'force_bars' : str(request.form['force_bars-tag']) }
+    log.info('Label: %s, Data: %s' % (label, data))
+    services.add_label(label, data)
     keys = services.get_data_keys()
     return render_template('admin.html', data_keys=keys)
 
