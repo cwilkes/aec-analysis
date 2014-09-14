@@ -28,7 +28,7 @@ def get_labels():
     labels = dict()
     for k in redis_client.keys(label_prefix + '*'):
         labels[k[len(label_prefix):]] = eval(redis_client.get(k))
-    log.info('Labels: %s' % (labels, ))
+    #log.info('Labels: %s' % (labels, ))
     return labels
 
 
@@ -67,7 +67,7 @@ def change_label(label_old_name, label_new_name):
 
 
 def save_and_notify_upload(socketio, photos, datastore, channel, namespace='/data'):
-    global  cur_name, upload_buffer_names
+    global cur_name, upload_buffer_names
     log.info('Save and notify on channel %s' % (channel, ))
     filename = photos.save(datastore, name=str(uuid.uuid4()) + '.')
     # docs are wrong, does not have the full path
@@ -86,9 +86,12 @@ def save_and_notify_upload(socketio, photos, datastore, channel, namespace='/dat
     redis_client.set(redis_key, data)
     if cur_name is None:
         cur_name = 'Run_%d' % (int(time.time(), ))
+        log.info('Set current label name to %s', cur_name)
     upload_buffer_names[channel] = tag
     if len(upload_buffer_names) == 4:
         add_label(cur_name, upload_buffer_names)
         cur_name = None
         upload_buffer_names = dict()
+    else:
+        log.info('Not doing auto labeling as != 4 keys: %s', str(upload_buffer_names.keys()))
     socketio.emit('data', dict(channel=channel, data=lines, tag=tag), namespace=namespace)

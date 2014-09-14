@@ -52,7 +52,7 @@ def admin_label_change():
     label = str(request.form['input_label'])
     data = {'nodes': str(request.form['nodes-tag']), 'bars': str(request.form['bars-tag']),
             'force_nodes': str(request.form['force_nodes-tag']), 'force_bars' : str(request.form['force_bars-tag']) }
-    log.info('Label: %s, Data: %s' % (label, data))
+    #log.info('Label: %s, Data: %s' % (label, data))
     services.add_label(label, data)
     keys = services.get_data_keys()
     return render_template('admin.html', data_keys=keys, labels=services.get_labels())
