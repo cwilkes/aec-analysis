@@ -156,7 +156,22 @@ function init() {
 
 // lights
 
-    //add spotlights
+
+
+    // add ambient lighting
+    var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+    scene.add(ambientLight);
+
+    // add directional lighting
+    var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(1, 1, 2).normalize();
+    directionalLight.target = new THREE.Vector3(0,0,0);
+    scene.add(directionalLight);
+    addSpotlights();
+}
+
+function addSpotlights() {
+     //add spotlights
     var spotLightA = new THREE.SpotLight(0xffffff);
     spotLightA.position.set(0, 100, 100);
     spotLightA.castShadow = true;
@@ -181,17 +196,6 @@ function init() {
     spotLightE.position.set(0, -100, 0);
     spotLightE.castShadow = true;
     scene.add(spotLightE);
-
-    // add ambient lighting
-    var ambientLight = new THREE.AmbientLight(0x0c0c0c);
-    scene.add(ambientLight);
-
-    // add directional lighting
-    var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(1, 1, 2).normalize();
-    directionalLight.target = new THREE.Vector3(0,0,0);
-    scene.add(directionalLight);
-
 }
 
 function clearScene() {
@@ -206,6 +210,7 @@ function clearScene() {
     particlegeom = new THREE.Geometry();
     bargeom = new THREE.Geometry();
     facegeom = new THREE.Geometry();
+    addSpotlights();
     // console.log("particlegeom.vertices.length: " +  particlegeom.vertices.length);
     renderer.clear();
 };
