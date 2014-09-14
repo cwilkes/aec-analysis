@@ -23,11 +23,10 @@ $(document).ready(function(){
     var mydict = {};
     socket.on('data', function(msg) {
         var channel = msg.channel;
+        console.log("Received data for channel " + channel);
         var data = splitFloats(msg.data);
         mydict[channel] = data;
-        loaddata_from_websocket(mydict['nodes'], mydict['bars'], [], mydict['force_nodes'],mydict['force_bars']);
-        render();
-
+        load_data(mydict['nodes'], mydict['bars'], [], mydict['force_nodes'], mydict['force_bars']);
     });
 
 

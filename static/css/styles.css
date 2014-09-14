@@ -1,0 +1,39 @@
+           body {
+               color: #ffffff;
+               font-family:Arial;
+               font-size:13px;
+               text-align:center;
+               font-weight: normal;
+
+               background-color: #000000;
+               margin: 0px;
+               overflow: hidden;
+           }
+           #info {
+               color: #fff;
+               background-color: rgba( 0, 0, 0, 0.75 );
+               position: relative;
+               top: 0px; width: 100%;
+               padding: 5px;
+               z-index:100;
+               width:55em;
+               margin:0 auto -2em;
+           }
+           #pacefreq {
+               color: #fff;
+               background-color: rgba( 0, 0, 0, 0.75 );
+               position: relative;
+               top: 40px; width: 100%;
+               padding: 5px;
+               z-index:100;
+               width:55em;
+               margin:0 auto -2em;
+               font-size:16px;
+           }
+           #datguiContainer {
+               position: absolute;
+               top: 0px;
+               right: 50px;
+               z-index: 101;
+           }
+           a { color: #ff0000 }
