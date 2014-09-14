@@ -5,7 +5,7 @@ import gzip
 import os
 import logging
 from hashlib import sha1
-
+import time
 
 log = logging.getLogger('run')
 
@@ -14,6 +14,10 @@ redis_client = redis.from_url(os.getenv('REDISTOGO_URL', 'redis://localhost:6379
 log.info('Redis client: %s' % (redis_client, ))
 
 label_prefix = '/labels/'
+
+
+upload_buffer_names = dict()
+cur_name = None
 
 
 def get_data(data_type, tag, hash_id):
@@ -29,7 +33,7 @@ def get_labels():
 
 
 def add_label(label, tags):
-    log.info('Adding %s : %s' % (label, tags))
+    log.info('Adding label %s for %s' % (label, tags))
     redis_client.set('/labels/%s' % (label, ), repr(tags))
 
 
@@ -63,6 +67,7 @@ def change_label(label_old_name, label_new_name):
 
 
 def save_and_notify_upload(socketio, photos, datastore, channel, namespace='/data'):
+    global  cur_name, upload_buffer_names
     log.info('Save and notify on channel %s' % (channel, ))
     filename = photos.save(datastore, name=str(uuid.uuid4()) + '.')
     # docs are wrong, does not have the full path
@@ -79,4 +84,11 @@ def save_and_notify_upload(socketio, photos, datastore, channel, namespace='/dat
     redis_key = '/points/%s/%s/%s' % (channel, tag, sha1(data).hexdigest())
     log.info('Lines #: %s, tag: %s, Redis key id: %s' % (len(lines), tag, redis_key))
     redis_client.set(redis_key, data)
+    if cur_name is None:
+        cur_name = 'Run_%d' % (int(time.time(), ))
+    upload_buffer_names[channel] = tag
+    if len(upload_buffer_names) == 4:
+        add_label(cur_name, upload_buffer_names)
+        cur_name = None
+        upload_buffer_names = dict()
     socketio.emit('data', dict(channel=channel, data=lines, tag=tag), namespace=namespace)
