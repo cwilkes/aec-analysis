@@ -32,6 +32,17 @@ def admin():
     keys = services.get_data_keys()
     return render_template('admin.html', data_keys=keys)
 
+@app.route('/admin/labels', methods=['POST',])
+def admin_label_change():
+    log.info('Form: %s' % (request.form, ))
+    label = request.form['input_label']
+    nodes_tag = request.form['nodes-tag']
+    bars_tag = request.form['bars-tag']
+    force_nodes_tag = request.form['force_nodes-tag']
+    force_bars_tag = request.form['force_bars-tag']
+
+    keys = services.get_data_keys()
+    return render_template('admin.html', data_keys=keys)
 
 @app.route('/api/<channel>', methods=['POST',])
 def api_upload_channel(channel):
