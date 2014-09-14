@@ -10,5 +10,6 @@ gevent-websocket==0.9.3
 greenlet==0.4.4
 itsdangerous==0.24
 pycrypto==2.6.1
+redis==2.10.3
 requests==2.4.1
 wsgiref==0.1.2

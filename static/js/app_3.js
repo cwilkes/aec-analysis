@@ -170,7 +170,7 @@ function clearScene() {
     // note: once .remove() is called it is taken out of the array, so just
     // remove the first item in the array till there are no more left
     while (objsToRemove.length > 0) {
-        console.log("Deleting uuid " + objsToRemove[0].uuid);
+        // console.log("Deleting uuid " + objsToRemove[0].uuid);
         scene.remove(objsToRemove[0]);
     }
     particlegeom = new THREE.Geometry();
