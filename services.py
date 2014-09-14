@@ -18,11 +18,16 @@ def get_data(data_type, tag, hash_id):
     return eval(redis_client.get('/points/%s/%s/%s' % (data_type, tag, hash_id)))
 
 
+def add_label(label, tags):
+    log.info('Adding %s : %s' % (label, tags))
+    redis_client.set('/labels/%s' % (label, ), repr(tags))
+
+
 def get_data_keys(data_type=None, tag=None):
     ret = dict()
     all_keys = redis_client.keys('/points/%s/%s/*' % ('*' if data_type is None else data_type, '*' if tag is None else tag))
     for key in all_keys:
-        p = key.split('/')[1:]
+        p = key.split('/')[2:]
         if not p[0] in ret:
             ret[p[0]] = dict()
         if not p[1] in ret[p[0]]:

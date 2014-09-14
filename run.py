@@ -26,21 +26,22 @@ configure_uploads(app, photos)
 def index_demo():
     return render_template('app.html')
 
-
 @app.route('/admin')
 def admin():
     keys = services.get_data_keys()
     return render_template('admin.html', data_keys=keys)
 
+@app.route('/admin/labels_select', methods=['POST',])
+def admin_label_select():
+    pass
+
 @app.route('/admin/labels', methods=['POST',])
 def admin_label_change():
-    log.info('Form: %s' % (request.form, ))
-    label = request.form['input_label']
-    nodes_tag = request.form['nodes-tag']
-    bars_tag = request.form['bars-tag']
-    force_nodes_tag = request.form['force_nodes-tag']
-    force_bars_tag = request.form['force_bars-tag']
-
+    label = str(request.form['input_label'])
+    data = {'nodes': str(request.form['nodes-tag']), 'bars': str(request.form['bars-tag']),
+            'force_nodes': str(request.form['force_nodes-tag']), 'force_bars' : str(request.form['force_bars-tag']) }
+    log.info('Label: %s, Data: %s' % (label, data))
+    services.add_label(label, data)
     keys = services.get_data_keys()
     return render_template('admin.html', data_keys=keys)
 
@@ -58,6 +59,10 @@ def return_socketiojs():
 @socketio.on('data', namespace='/data')
 def data_message(message):
     emit('data', message, broadcast=True)
+
+@app.route('/admin/')
+def admin_slash():
+    return admin()
 
 
 if __name__ == '__main__':
