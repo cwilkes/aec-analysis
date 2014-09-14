@@ -11,7 +11,7 @@
         {% for dt in ['nodes', 'bars', 'force_nodes', 'force_bars'] %}
         <tr>
             <td>{{dt}}</td>
-            {% for tag in data_keys[dt] %}
+            {% for tag, vals in data_keys[dt]|dictsort %}
             <td><input type="radio" name="{{dt}}-tag" value="{{tag}}">{{tag}}</td>
             {% endfor %}
         </tr>
