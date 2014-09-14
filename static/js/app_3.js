@@ -179,29 +179,29 @@ function init() {
 }
 
 function addSpotlights() {
-     //add spotlights
+    //add spotlights
     var spotLightA = new THREE.SpotLight(0xffffff);
-    spotLightA.position.set(0, 100, 100);
+    spotLightA.position.set(0, 100000, 100000);
     spotLightA.castShadow = true;
     scene.add(spotLightA);
 
     var spotLightB = new THREE.SpotLight(0xffffff);
-    spotLightB.position.set(1000000, 100, 0);
+    spotLightB.position.set(1000000, 100000, 0);
     spotLightB.castShadow = true;
     scene.add(spotLightB);
 
     var spotLightC = new THREE.SpotLight(0xffffff);
-    spotLightC.position.set(0, 0, -100);
+    spotLightC.position.set(0, 0, -10000);
     spotLightC.castShadow = true;
     scene.add(spotLightC);
 
     var spotLightD = new THREE.SpotLight(0xffffff);
-    spotLightD.position.set(-100, 0, -100);
+    spotLightD.position.set(-100, 0, -10000);
     spotLightD.castShadow = true;
     scene.add(spotLightD);
 
     var spotLightE = new THREE.SpotLight(0xffffff);
-    spotLightE.position.set(0, -100, 0);
+    spotLightE.position.set(0, -10000, 0);
     spotLightE.castShadow = true;
     scene.add(spotLightE);
 }
@@ -318,9 +318,9 @@ function load_data(nodeData, barData, elemData, defData, axialData) {
 
         var pipeMaterial = new THREE.MeshPhongMaterial( {
             // light
-            specular: '#a9fcff',
+            specular: '#212121',
             // intermediate
-            color: '#00abb1',
+            color: '#212121',
             // dark
             emissive: pipeColor,//'#006063',
             shininess: 100,
