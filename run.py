@@ -23,7 +23,7 @@ configure_uploads(app, photos)
 
 @app.route('/')
 def index_demo():
-    return render_template('app.html')
+    return render_template('app.html', label_names=','.join(sorted(services.get_labels().keys())))
 
 @app.route('/admin')
 def admin():
