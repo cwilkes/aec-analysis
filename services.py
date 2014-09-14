@@ -83,7 +83,10 @@ def save_and_notify_upload(socketio, photos, datastore, channel, namespace='/dat
     data = str(lines)
     redis_key = '/points/%s/%s/%s' % (channel, tag, sha1(data).hexdigest())
     log.info('Lines #: %s, tag: %s, Redis key id: %s' % (len(lines), tag, redis_key))
-    redis_client.set(redis_key, data)
+    try:
+        redis_client.set(redis_key, data)
+    except Exception as ex:
+        log.info('Error: %s', ex)
     log.info('set in redis: %s %s', redis_key, data)
     socketio.emit('data', dict(channel=channel, data=lines, tag=tag), namespace=namespace)
     log.info('done: %s', redis_key)
