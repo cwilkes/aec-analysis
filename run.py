@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request, render_template, send_file
+from flask import request, render_template, send_file, logging
 from flask.ext.socketio import SocketIO, emit
 import os
 
@@ -9,26 +9,24 @@ DEFAULT_PORT = 5000
 
 socketio = SocketIO(app)
 
+log = logging.getLogger('')
+log.setLevel(logging.DEBUG)
+log.addHandler(logging.StreamHandler())
+
 @app.route('/')
 def index():
     return render_template('test.html')
 
 
-@app.route('/2')
-def index2():
-    return render_template('test2.html')
+@app.route('/demo')
+def index_demo():
+    return render_template('data_demo.html')
 
 
 @app.route('/socket.io')
 def return_socketiojs():
     return send_file('static/js/socket.io-1.1.0.js')
 
-
-@app.route("/", methods=['POST'])
-def post():
-    d = request.data
-    print 'got', d
-    return d
 
 @socketio.on('my event', namespace='/test')
 def test_message(message):
@@ -38,6 +36,7 @@ def test_message(message):
 def test_message(message):
     emit('my response', {'data': message['data']}, broadcast=True)
 
+
 @socketio.on('connect', namespace='/test')
 def test_connect():
     emit('my response', {'data': 'Connected'})
@@ -45,6 +44,11 @@ def test_connect():
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
     print('Client disconnected')
+
+
+@socketio.on('data', namespace='/data')
+def data_message(message):
+    emit('data', message, broadcast=True)
 
 
 if __name__ == '__main__':

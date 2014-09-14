@@ -11,7 +11,7 @@ $(document).ready(function(){
         // event handler for server sent data
         // the data is displayed in the "Received" section of the page
         socket.on('my response', function(msg) {
-            $('#log').append('<br>Received : ' + msg.data);
+            $('#log').append('<br>Received : ' + msg.channel + ", " + msg.data + " : " + Object.keys(msg));
         });
 
         // handlers for the different forms in the page
