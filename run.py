@@ -1,7 +1,12 @@
 from flask import Flask
 from flask import request, render_template, send_file, logging
-from flask.ext.socketio import SocketIO, emit
+from flask.ext.socketio import SocketIO, emit, send, BaseNamespace
+
+from flask.ext.uploads import UploadSet, configure_uploads
 import os
+import uuid
+import gzip
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
@@ -12,6 +17,12 @@ socketio = SocketIO(app)
 log = logging.getLogger('')
 log.setLevel(logging.DEBUG)
 log.addHandler(logging.StreamHandler())
+
+photos = UploadSet()
+photos.file_allowed = lambda a, b: True
+
+app.config['UPLOADS_DEFAULT_DEST'] = '/tmp'
+configure_uploads(app, photos)
 
 @app.route('/old')
 def index():
@@ -27,6 +38,25 @@ def index_demo():
 def three_g_app():
     return render_template('app.html')
 
+
+def _save_and_notify_upload(channel, namespace='/data'):
+    log.info('Save and notify on channel %s' % (channel, ))
+    #log.info('Request: %s : %s : %s : %s' % (request.values, request.files, request.form, request.headers))
+    filename = photos.save(request.files['data'], name=str(uuid.uuid4()) + '.')
+    # docs are wrong, does not have the full path
+    filename = os.path.join('/tmp/files', filename)
+    reader = gzip.open(filename) if filename.endswith('.gz') else open(filename)
+    lines = [_ for _ in reader]
+    reader.close()
+    os.remove(filename)
+    log.info('Lines #: %s' % (len(lines), ))
+    message = dict(data=lines, channel=channel)
+    socketio.emit('data', message, namespace=namespace)
+
+@app.route('/api/<channel>', methods=['POST',])
+def api_upload_channel(channel):
+    _save_and_notify_upload(channel)
+    return 'ok'
 
 @app.route('/data2/{name}')
 def existing_data(name):

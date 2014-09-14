@@ -181,9 +181,24 @@ function clearScene() {
 };
 
 function load_data(nodeData, barData, elemData, defData, axialData) {
-    if (typeof nodeData === 'undefined' || typeof barData === 'undefined' ||
-        typeof elemData === 'undefined' || typeof defData === 'undefined' || typeof axialData === 'undefined') {
-        console.log("One elements not defined");
+    if (typeof nodeData === 'undefined') {
+        console.log("nodeData not defined");
+        return;
+    }
+    if (typeof barData === 'undefined') {
+        console.log("barData not defined");
+        return;
+    }
+    if( typeof elemData === 'undefined') {
+         console.log("elemData not defined");
+        return;
+    }
+    if (typeof defData === 'undefined') {
+          console.log("defData not defined");
+        return;
+    }
+    if (typeof axialData === 'undefined') {
+        console.log("axialData not defined");
         return;
     }
 
