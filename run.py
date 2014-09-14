@@ -1,5 +1,4 @@
-from flask import Flask
-from flask import request, render_template, send_file, logging
+from flask import Flask, request, render_template, send_file, logging, redirect
 from flask.ext.socketio import SocketIO, emit
 from flask.ext.uploads import UploadSet, configure_uploads
 import os
@@ -29,13 +28,17 @@ def index_demo():
 @app.route('/admin')
 def admin():
     keys = services.get_data_keys()
-    return render_template('admin.html', data_keys=keys)
+    return render_template('admin.html', data_keys=keys, labels=services.get_labels())
 
-@app.route('/admin/labels_select', methods=['POST',])
+@app.route('/admin/labels_select')
 def admin_label_select():
-    pass
+    label = str(request.args['label'])
+    log.info('Selected label %s' % (label, ))
+    services.publish_label(socketio, label)
+    return redirect('/admin')
 
-@app.route('/admin/labels', methods=['POST',])
+
+@app.route('/admin/labels', methods=['POST', ])
 def admin_label_change():
     label = str(request.form['input_label'])
     data = {'nodes': str(request.form['nodes-tag']), 'bars': str(request.form['bars-tag']),
@@ -43,7 +46,7 @@ def admin_label_change():
     log.info('Label: %s, Data: %s' % (label, data))
     services.add_label(label, data)
     keys = services.get_data_keys()
-    return render_template('admin.html', data_keys=keys)
+    return render_template('admin.html', data_keys=keys, labels=services.get_labels())
 
 @app.route('/api/<channel>', methods=['POST',])
 def api_upload_channel(channel):

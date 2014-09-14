@@ -8,7 +8,7 @@
 <p>Create labels</p>
 <form method="POST" action="/admin/labels">
     <table border="1">
-        {% for dt in data_keys %}
+        {% for dt in ['nodes', 'bars', 'force_nodes', 'force_bars'] %}
         <tr>
             <td>{{dt}}</td>
             {% for tag in data_keys[dt] %}
@@ -25,18 +25,16 @@
 <p>Select labels</p>
 <form method="POST" action="/admin/labels_select">
     <table border="1">
-        {% for dt in data_keys %}
+        <tr><th>Label</th><th>Nodes</th><th>Bars</th><th>Force Nodes</th><th>Force Bars</th></tr>
+        {% for dt in labels %}
         <tr>
-            <td>{{dt}}</td>
-            {% for tag in data_keys[dt] %}
-            <td><input type="radio" name="{{dt}}-tag" value="{{tag}}">{{tag}}</td>
+            <td><a href="/admin/labels_select?label={{dt}}">{{dt}}</a></td>
+            {% for tag in ['nodes', 'bars', 'force_nodes', 'force_bars'] %}
+             <td>{{labels[dt][tag]}}</td>
             {% endfor %}
         </tr>
         {% endfor %}
     </table>
-    Input Label: <input type="text" name="input_label">
-    <br>
-    <input type="submit"/>
 </form>
 
 

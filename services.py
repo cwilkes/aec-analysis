@@ -7,15 +7,25 @@ import logging
 from hashlib import sha1
 
 
-log = logging.getLogger('services')
+log = logging.getLogger('run')
 
 redis_client = redis.from_url(os.getenv('REDISTOGO_URL', 'redis://localhost:6379'))
 
 log.info('Redis client: %s' % (redis_client, ))
 
+label_prefix = '/labels/'
+
 
 def get_data(data_type, tag, hash_id):
     return eval(redis_client.get('/points/%s/%s/%s' % (data_type, tag, hash_id)))
+
+
+def get_labels():
+    labels = dict()
+    for k in redis_client.keys(label_prefix + '*'):
+        labels[k[len(label_prefix):]] = eval(redis_client.get(k))
+    log.info('Labels: %s' % (labels, ))
+    return labels
 
 
 def add_label(label, tags):
@@ -34,6 +44,16 @@ def get_data_keys(data_type=None, tag=None):
             ret[p[0]][p[1]] = list()
         ret[p[0]][p[1]].append(p[2])
     return ret
+
+
+def publish_label(socketio, label):
+    log.info('publish %s', label)
+    tags = eval(redis_client.get(label_prefix + label))
+    log.info('tags: %s' % (tags, ))
+    for tag in tags.keys():
+        log.info('Emitting data for channel: %s data: %s', tag, tags[tag])
+        socketio.emit('data', dict(channel=tag, data=tags[tag]), namespace='/data')
+    return tags
 
 
 def save_and_notify_upload(socketio, photos, datastore, channel, namespace='/data'):
