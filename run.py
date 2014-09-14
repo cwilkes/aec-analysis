@@ -23,6 +23,11 @@ def index_demo():
     return render_template('data_demo.html')
 
 
+@app.route('/app')
+def three_g_app():
+    return render_template('app.html')
+
+
 @app.route('/socket.io')
 def return_socketiojs():
     return send_file('static/js/socket.io-1.1.0.js')

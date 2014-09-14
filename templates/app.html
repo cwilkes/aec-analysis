@@ -55,15 +55,15 @@
        </div>
 
 
-        <script src='file:\\C:\SCLE\AECHack\js\three.js'></script>
-        <script src='file:\\C:SCLE\AECHack\js\jquery.min.js'></script>
-        <script src='file:\\C:SCLE\AECHack\js\csvToArray.v2.1.min.js'></script>
-        <script src='file:\\C:SCLE\AECHack\js\TrackballControls.js'></script>
-        <script src='file:\\C:SCLE\AECHack\js\dat.gui.js'></script>
-        <script src='file:\\C:SCLE\AECHack\js\Detector.js'></script>
-        <script src='file:\\C:SCLE\AECHack\js\WebGLRenderer.js'></script>
-        <script src='file:\\C:SCLE\AECHack\js\stats.min.js'></script>
-        <script src='file:\\C:SCLE\AECHack\js\chroma.min.js'></script>
+        <script src='/static/js/three.js'></script>
+        <script src='/static/js/jquery.min.js'></script>
+        <script src='/static/js/csvToArray.v2.1.min.js'></script>
+        <script src='/static/js/TrackballControls.js'></script>
+        <script src='/static/js/dat.gui.js'></script>
+        <script src='/static/js/Detector.js'></script>
+        <script src='/static/js/WebGLRenderer.js'></script>
+        <script src='/static/js/stats.min.js'></script>
+        <script src='/static/js/chroma.min.js'></script>
 
        <script type="x-shader/x-vertex" id="vertexshader">
 
@@ -342,7 +342,7 @@
 
            // add line system
            barsys = new THREE.Line( { bargeom, barMaterial, type : THREE.LinePieces } );
-           barsys.dynamic = true;  
+           barsys.dynamic = true;
 
            // add mesh faces
            facegeom.mergeVertices();
