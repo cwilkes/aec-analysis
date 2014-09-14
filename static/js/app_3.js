@@ -260,7 +260,7 @@ function load_data(nodeData, barData, elemData, defData, axialData) {
         bargeom.vertices.push( vertex1 );
         bargeom.vertices.push( vertex2 );
 
-        radius = axialData[b][1];
+        radius = axialData[b][1] / 2000;
 
         var direction = new THREE.Vector3();
         direction.x = vertex2.x - vertex1.x;
