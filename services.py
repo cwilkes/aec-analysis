@@ -15,12 +15,12 @@ log.info('Redis client: %s' % (redis_client, ))
 
 
 def get_data(data_type, tag, hash_id):
-    return eval(redis_client.get('/%s/%s/%s' % (data_type, tag, hash_id)))
+    return eval(redis_client.get('/points/%s/%s/%s' % (data_type, tag, hash_id)))
 
 
 def get_data_keys(data_type=None, tag=None):
     ret = dict()
-    all_keys = redis_client.keys('/%s/%s/*' % ('*' if data_type is None else data_type, '*' if tag is None else tag))
+    all_keys = redis_client.keys('/points/%s/%s/*' % ('*' if data_type is None else data_type, '*' if tag is None else tag))
     for key in all_keys:
         p = key.split('/')[1:]
         if not p[0] in ret:
@@ -45,7 +45,7 @@ def save_and_notify_upload(socketio, photos, datastore, channel, namespace='/dat
     reader.close()
     os.remove(filename)
     data = str(lines)
-    redis_key = '/%s/%s/%s' % (channel, tag, sha1(data).hexdigest())
+    redis_key = '/points/%s/%s/%s' % (channel, tag, sha1(data).hexdigest())
     log.info('Lines #: %s, tag: %s, Redis key id: %s' % (len(lines), tag, redis_key))
     redis_client.set(redis_key, data)
     socketio.emit('data', dict(channel=channel, data=lines, tag=tag), namespace=namespace)
