@@ -213,6 +213,7 @@ function load_data(nodeData, barData, elemData, defData, axialData) {
     var minaxial = axialData[axialData.length - 1][0];
     var maxaxial = axialData[axialData.length - 1][1];
 
+    var radius;
     // // if there are multiple analysis runs, extract how many runs
     // analysiscount = axialData[0].length;
     // minanalysis = axialData[0][0];
@@ -240,10 +241,14 @@ function load_data(nodeData, barData, elemData, defData, axialData) {
     }
 
     // process bars
-    for (var b = 0; b < barData.length; b++) {
+    var pipes = [];
+    for( var b = 0; b < barData.length; b++ ) {
+
         var vertex1 = new THREE.Vector3();
         var vertex2 = new THREE.Vector3();
 
+        console.log(barData[b][0]);
+        console.log(barData[b][1]);
         vertex1.x = nodeData[parseInt(barData[b][0])][0];
         vertex1.y = nodeData[parseInt(barData[b][0])][1];
         vertex1.z = nodeData[parseInt(barData[b][0])][2];
@@ -252,9 +257,32 @@ function load_data(nodeData, barData, elemData, defData, axialData) {
         vertex2.y = nodeData[parseInt(barData[b][1])][1];
         vertex2.z = nodeData[parseInt(barData[b][1])][2];
 
-        bargeom.vertices.push(vertex1);
-        bargeom.vertices.push(vertex2);
+        bargeom.vertices.push( vertex1 );
+        bargeom.vertices.push( vertex2 );
+
+        radius = axialData[b][1];
+
+        var direction = new THREE.Vector3();
+        direction.x = vertex2.x - vertex1.x;
+        direction.y = vertex2.y - vertex1.y;
+        direction.z = vertex2.z - vertex1.z;
+
+        var pipeGeometry = new THREE.PipeGeometry( radius, direction.length(), 8);
+        pipeGeometry.applyMatrix( new THREE.Matrix4().makeRotationFromEuler( new THREE.Euler( Math.PI / 2, Math.PI, 0 ) ) );
+
+        var pipeColor = new THREE.Color(axialData[b][2],axialData[b][3],axialData[b][4]);
+        console.log(pipeColor);
+        var pipeMaterial = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: pipeColor, specular: 0x009900, shininess: 30, shading: THREE.SmoothShading });
+
+        pipes[b] = new THREE.Mesh(pipeGeometry, pipeMaterial);
+
+        pipes[b].position.x = vertex1.x;
+        pipes[b].position.y = vertex1.y;
+        pipes[b].position.z = vertex1.z;
+        pipes[b].lookAt(vertex2);
+
     }
+
 
     // process Elements
     for (var f = 0; f < elemData.length; f++) {
@@ -291,6 +319,9 @@ function load_data(nodeData, barData, elemData, defData, axialData) {
     barsys = new THREE.Line(bargeom, barMaterial, THREE.LinePieces);
     barsys.dynamic = true;
 
+    // add pipe system
+    // pipe meshes created inside loop for now TODO
+
     // add mesh faces
     facegeom.mergeVertices();
     facegeom.computeCentroids();
@@ -304,6 +335,9 @@ function load_data(nodeData, barData, elemData, defData, axialData) {
     scene.add(particlesys);
     scene.add(barsys);
     scene.add(facesys);
+    for( var b = 1; b < barData.length; b++ ) {
+        scene.add(pipes[b]);
+    }
 
     window.addEventListener('resize', onWindowResize, false);
 }

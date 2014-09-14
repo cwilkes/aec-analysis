@@ -32339,6 +32339,103 @@ THREE.CircleGeometry.prototype = Object.create( THREE.Geometry.prototype );
 
 THREE.CubeGeometry = THREE.BoxGeometry;
 
+// Streamlined Pipe Creation
+
+THREE.PipeGeometry = function ( radius, height, radialSegments) {
+
+  THREE.Geometry.call( this );
+
+  this.parameters = {
+    radius: radius,
+    height: height,
+    radialSegments: radialSegments
+  };
+
+  radius = radius !== undefined ? radius : 20;
+
+  radialSegments = radialSegments || 8;
+
+  var x, y, vertices = [], uvs = [];
+
+  for ( y = 0; y <= 1; y ++ ) {
+
+    var verticesRow = [];
+    var uvsRow = [];
+
+    for ( x = 0; x <= radialSegments; x ++ ) {
+
+      var u = x / radialSegments;
+
+      var vertex = new THREE.Vector3();
+      vertex.x =  radius * Math.sin( u * Math.PI * 2 );
+      vertex.y = y * height;
+      vertex.z = radius * Math.cos( u * Math.PI * 2 );
+
+      this.vertices.push( vertex );
+
+      verticesRow.push( this.vertices.length - 1 );
+      uvsRow.push( new THREE.Vector2( u, 1 - y ) );
+
+    }
+
+    vertices.push( verticesRow );
+    uvs.push( uvsRow );
+
+  }
+
+  var tanTheta = 0;
+  var na, nb;
+
+  for ( x = 0; x < radialSegments; x ++ ) {
+
+    if ( radius !== 0 ) {
+
+      na = this.vertices[ vertices[ 0 ][ x ] ].clone();
+      nb = this.vertices[ vertices[ 0 ][ x + 1 ] ].clone();
+
+    } else {
+
+      na = this.vertices[ vertices[ 1 ][ x ] ].clone();
+      nb = this.vertices[ vertices[ 1 ][ x + 1 ] ].clone();
+
+    }
+
+    na.setY( Math.sqrt( na.x * na.x + na.z * na.z ) * tanTheta ).normalize();
+    nb.setY( Math.sqrt( nb.x * nb.x + nb.z * nb.z ) * tanTheta ).normalize();
+
+    for ( y = 0; y < 1; y ++ ) {
+
+      var v1 = vertices[ y ][ x ];
+      var v2 = vertices[ y + 1 ][ x ];
+      var v3 = vertices[ y + 1 ][ x + 1 ];
+      var v4 = vertices[ y ][ x + 1 ];
+
+      var n1 = na.clone();
+      var n2 = na.clone();
+      var n3 = nb.clone();
+      var n4 = nb.clone();
+
+      var uv1 = uvs[ y ][ x ].clone();
+      var uv2 = uvs[ y + 1 ][ x ].clone();
+      var uv3 = uvs[ y + 1 ][ x + 1 ].clone();
+      var uv4 = uvs[ y ][ x + 1 ].clone();
+
+      this.faces.push( new THREE.Face3( v1, v2, v4, [ n1, n2, n4 ] ) );
+      this.faceVertexUvs[ 0 ].push( [ uv1, uv2, uv4 ] );
+
+      this.faces.push( new THREE.Face3( v2, v3, v4, [ n2.clone(), n3, n4.clone() ] ) );
+      this.faceVertexUvs[ 0 ].push( [ uv2.clone(), uv3, uv4.clone() ] );
+
+    }
+
+  }
+
+  this.computeFaceNormals();
+
+}
+
+THREE.PipeGeometry.prototype = Object.create( THREE.Geometry.prototype );
+
 /**
  * @author mrdoob / http://mrdoob.com/
  */
