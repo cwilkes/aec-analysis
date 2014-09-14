@@ -147,27 +147,27 @@
        function loaddata() {
             $.when(
                 $.ajax({
-                    url: 'data/nodes.csv ',
+                    url: 'static/data/nodes.csv',
                     dataType: 'text',
                     cache: false
                 }),
                 $.ajax({
-                    url: 'data/bars.csv',
+                    url: 'static/data/bars.csv',
                     dataType: 'text',
                     cache: false
                 }),
                 $.ajax({
-                    url: 'data/elements.csv',
+                    url: 'static/data/elements.csv',
                     dataType: 'text',
                     cache: false
                 }),
                 $.ajax({
-                    url: 'data/nodedata.csv',
+                    url: 'static/data/nodedata.csv',
                     dataType: 'text',
                     cache: false
                 }),
                 $.ajax({
-                    url: 'data/bardata.csv',
+                    url: 'static/data/bardata.csv',
                     dataType: 'text',
                     cache: false
                 })).done(function(a1,a2,a3,a4,a5){
@@ -341,7 +341,7 @@
            particlesys.dynamic = true;
 
            // add line system
-           barsys = new THREE.Line( { bargeom, barMaterial, type : THREE.LinePieces } );
+           barsys = new THREE.Line(bargeom, barMaterial, THREE.LinePieces );
            barsys.dynamic = true;
 
            // add mesh faces

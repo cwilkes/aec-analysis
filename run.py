@@ -28,6 +28,12 @@ def three_g_app():
     return render_template('app.html')
 
 
+@app.route('/data2/{name}')
+def existing_data(name):
+    log.info("serving %s" % (name, ))
+    return send_file(name);
+
+
 @app.route('/socket.io')
 def return_socketiojs():
     return send_file('static/js/socket.io-1.1.0.js')
