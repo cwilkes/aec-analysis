@@ -297,7 +297,7 @@ function load_data(nodeData, barData, elemData, defData, axialData) {
         direction.y = vertex2.y - vertex1.y;
         direction.z = vertex2.z - vertex1.z;
 
-        var pipeGeometry = new THREE.CylinderGeometry( radius, radius, direction.length(), 12, 2);//new THREE.PipeGeometry( radius, direction.length(), 20);
+        var pipeGeometry = new THREE.CylinderGeometry( radius, radius, direction.length(), 8, 1, true);//new THREE.PipeGeometry( radius, direction.length(), 20);
         pipeGeometry.applyMatrix( new THREE.Matrix4().makeRotationFromEuler( new THREE.Euler( Math.PI / 2, Math.PI, 0 ) ) );
 
         var pipeColor = new THREE.Color(axialData[b][2],axialData[b][3],axialData[b][4]);
