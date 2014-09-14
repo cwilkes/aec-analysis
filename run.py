@@ -13,12 +13,12 @@ log = logging.getLogger('')
 log.setLevel(logging.DEBUG)
 log.addHandler(logging.StreamHandler())
 
-@app.route('/')
+@app.route('/old')
 def index():
     return render_template('test.html')
 
 
-@app.route('/demo')
+@app.route('/')
 def index_demo():
     return render_template('data_demo.html')
 
