@@ -22,7 +22,7 @@
     <input type="submit"/>
 </form>
 
-<p>Select labels</p>
+<p>Select labels for view</p>
 <form method="POST" action="/admin/labels_select">
     <table border="1">
         <tr><th>Label</th><th>Nodes</th><th>Bars</th><th>Force Nodes</th><th>Force Bars</th></tr>
@@ -36,6 +36,18 @@
         {% endfor %}
     </table>
 </form>
+
+<p>Rename labels</p>
+<form method="POST" action="/admin/labels_rename">
+    <select name="label_old_name">
+        {% for dt in labels %}
+         <option value="{{dt}}">{{dt}}</option>
+        {% endfor %}
+        New Name: <input type="text" name="label_new_name"/>
+    </select>
+    <input type="submit" value="Change name">
+</form>
+
 
 
 </div>

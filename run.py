@@ -30,6 +30,15 @@ def admin():
     keys = services.get_data_keys()
     return render_template('admin.html', data_keys=keys, labels=services.get_labels())
 
+@app.route('/admin/labels_rename', methods=['POST', ])
+def admin_label_rename():
+    label_old_name = str(request.form['label_old_name'])
+    label_new_name = str(request.form['label_new_name'])
+    log.info('Change %s to %s', label_old_name, label_new_name)
+    services.change_label(label_old_name, label_new_name)
+    return redirect('/admin')
+
+
 @app.route('/admin/labels_select')
 def admin_label_select():
     label = str(request.args['label'])

@@ -58,6 +58,10 @@ def publish_label(socketio, label):
     return tags
 
 
+def change_label(label_old_name, label_new_name):
+    redis_client.rename(label_prefix + label_old_name, label_prefix + label_new_name)
+
+
 def save_and_notify_upload(socketio, photos, datastore, channel, namespace='/data'):
     log.info('Save and notify on channel %s' % (channel, ))
     filename = photos.save(datastore, name=str(uuid.uuid4()) + '.')
