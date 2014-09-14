@@ -84,14 +84,15 @@ def save_and_notify_upload(socketio, photos, datastore, channel, namespace='/dat
     redis_key = '/points/%s/%s/%s' % (channel, tag, sha1(data).hexdigest())
     log.info('Lines #: %s, tag: %s, Redis key id: %s' % (len(lines), tag, redis_key))
     redis_client.set(redis_key, data)
-    if cur_name is None:
-        cur_name = 'Run_%d' % (int(time.time(), ))
-        log.info('Set current label name to %s', cur_name)
-    upload_buffer_names[channel] = tag
-    if len(upload_buffer_names) == 4:
-        add_label(cur_name, upload_buffer_names)
-        cur_name = None
-        upload_buffer_names = dict()
-    else:
-        log.info('Not doing auto labeling as != 4 keys: %s', str(upload_buffer_names.keys()))
+    if False:
+        if cur_name is None:
+            cur_name = 'Run_%d' % (int(time.time(), ))
+            log.info('Set current label name to %s', cur_name)
+        upload_buffer_names[channel] = tag
+        if len(upload_buffer_names) == 4:
+            add_label(cur_name, upload_buffer_names)
+            cur_name = None
+            upload_buffer_names = dict()
+        else:
+            log.info('Not doing auto labeling as != 4 keys: %s', str(upload_buffer_names.keys()))
     socketio.emit('data', dict(channel=channel, data=lines, tag=tag), namespace=namespace)
