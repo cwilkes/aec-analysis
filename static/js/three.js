@@ -32429,7 +32429,7 @@ THREE.PipeGeometry = function ( radius, height, radialSegments) {
     }
 
   }
-
+  this.computeCentroids();
   this.computeFaceNormals();
 
 }

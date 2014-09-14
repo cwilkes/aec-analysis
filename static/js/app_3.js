@@ -157,28 +157,28 @@ function init() {
 // lights
 
     //add spotlights
-    var spotLightA = new THREE.SpotLight(0xf2f2f2);
-    spotLightA.position.set(0, 1000000, 1000000);
-    scene.add(spotLightA);
+    var spotLightA = new THREE.SpotLight(0xffffff);
+    spotLightA.position.set(0, 100, 100);
     spotLightA.castShadow = true;
+    scene.add(spotLightA);
 
-    var spotLightB = new THREE.SpotLight(0x8D8D8D);
-    spotLightB.position.set(1000000, 100000, 0);
+    var spotLightB = new THREE.SpotLight(0xffffff);
+    spotLightB.position.set(1000000, 100, 0);
     spotLightB.castShadow = true;
     scene.add(spotLightB);
 
-    var spotLightC = new THREE.SpotLight(0x666666);
-    spotLightC.position.set(0, 0, -1000000);
+    var spotLightC = new THREE.SpotLight(0xffffff);
+    spotLightC.position.set(0, 0, -100);
     spotLightC.castShadow = true;
     scene.add(spotLightC);
 
-    var spotLightD = new THREE.SpotLight(0x8D8D8D);
-    spotLightD.position.set(-1000000, 0, -1000000);
+    var spotLightD = new THREE.SpotLight(0xffffff);
+    spotLightD.position.set(-100, 0, -100);
     spotLightD.castShadow = true;
     scene.add(spotLightD);
 
-    var spotLightE = new THREE.SpotLight(0x666666);
-    spotLightE.position.set(0, -1000000, 0);
+    var spotLightE = new THREE.SpotLight(0xffffff);
+    spotLightE.position.set(0, -100, 0);
     spotLightE.castShadow = true;
     scene.add(spotLightE);
 
@@ -187,9 +187,10 @@ function init() {
     scene.add(ambientLight);
 
     // add directional lighting
-    // var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    // directionalLight.position.set(1, 1, 2).normalize();
-    // scene.add(directionalLight);
+    var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(1, 1, 2).normalize();
+    directionalLight.target = new THREE.Vector3(0,0,0);
+    scene.add(directionalLight);
 
 }
 
@@ -296,16 +297,16 @@ function load_data(nodeData, barData, elemData, defData, axialData) {
         direction.y = vertex2.y - vertex1.y;
         direction.z = vertex2.z - vertex1.z;
 
-        var pipeGeometry = new THREE.CylinderGeometry( radius, radius, direction.length(), 20, 10);//new THREE.PipeGeometry( radius, direction.length(), 8);
+        var pipeGeometry = new THREE.CylinderGeometry( radius, radius, direction.length(), 12, 2);//new THREE.PipeGeometry( radius, direction.length(), 20);
         pipeGeometry.applyMatrix( new THREE.Matrix4().makeRotationFromEuler( new THREE.Euler( Math.PI / 2, Math.PI, 0 ) ) );
 
         var pipeColor = new THREE.Color(axialData[b][2],axialData[b][3],axialData[b][4]);
 
         var pipeMaterial = new THREE.MeshPhongMaterial( {
             // light
-            //specular: '#a9fcff',
+            specular: '#a9fcff',
             // intermediate
-            //color: '#00abb1',
+            color: '#00abb1',
             // dark
             emissive: pipeColor,//'#006063',
             shininess: 100,
@@ -315,9 +316,9 @@ function load_data(nodeData, barData, elemData, defData, axialData) {
         pipes[b] = new THREE.Mesh(pipeGeometry, pipeMaterial);
         pipes[b].overdraw = true;
 
-        pipes[b].position.x = vertex1.x;
-        pipes[b].position.y = vertex1.y;
-        pipes[b].position.z = vertex1.z;
+        pipes[b].position.x = (vertex2.x+vertex1.x)/2;
+        pipes[b].position.y = (vertex2.y+vertex1.y)/2;
+        pipes[b].position.z = (vertex2.z+vertex1.z)/2;
         pipes[b].lookAt(vertex2);
 
     }
