@@ -29,7 +29,8 @@ def index_demo():
 
 @app.route('/admin')
 def admin():
-    return render_template('admin.html')
+    keys = services.get_data_keys()
+    return render_template('admin.html', data_keys=keys)
 
 
 @app.route('/api/<channel>', methods=['POST',])

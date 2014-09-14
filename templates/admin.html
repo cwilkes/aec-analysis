@@ -5,7 +5,15 @@
     <title>Admin made</title>
 </head>
 <body>
-<p>hi</p>
-
+<table border="1">
+    {% for dt in data_keys %}
+    <tr><td>{{dt}}</td>
+        {% for tag in data_keys[dt] %}
+            <td>{{tag}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+</div>
 </body>
 </html>
