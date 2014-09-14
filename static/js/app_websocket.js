@@ -1,15 +1,3 @@
-function splitFloats(input) {
-   var data = [];
-    for (var i = 0; i < input.length; i++) {
-        var vals = [];
-        var elements = input[i].split(",");
-        for (var j = 0; j < elements.length; j++) {
-            vals.push(parseFloat(elements[j]));
-        }
-        data.push(vals);
-    }
-    return data;
-}
 
 $(document).ready(function(){
     namespace = '/data'; // change to an empty string to use the global namespace
@@ -28,7 +16,5 @@ $(document).ready(function(){
         mydict[channel] = data;
         load_data(mydict['nodes'], mydict['bars'], [], mydict['force_nodes'], mydict['force_bars']);
     });
-
-
 
 });
