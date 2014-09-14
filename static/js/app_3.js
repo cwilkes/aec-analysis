@@ -277,8 +277,8 @@ function load_data(nodeData, barData, elemData, defData, axialData) {
         var vertex1 = new THREE.Vector3();
         var vertex2 = new THREE.Vector3();
 
-        console.log(barData[b][0]);
-        console.log(barData[b][1]);
+        // console.log(barData[b][0]);
+        // console.log(barData[b][1]);
         vertex1.x = nodeData[parseInt(barData[b][0])][0];
         vertex1.y = nodeData[parseInt(barData[b][0])][1];
         vertex1.z = nodeData[parseInt(barData[b][0])][2];
