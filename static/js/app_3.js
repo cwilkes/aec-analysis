@@ -2,6 +2,8 @@ var controls, renderer, scene, camera, stats;
 var node_attr, colscale, colscale2;
 var particleMaterial, barMaterial, faceMaterial, particlegeom, bargeom, particlesys, barsys, facegeom, facesys;
 
+var hasData = false;
+
 function init() {
     console.log("init in app_3.js");
 
@@ -118,7 +120,8 @@ function init() {
     parameters = {
         analysis: 1.0,
         previewtype: 'Mesh',
-        meshtype: 'Solid'
+        meshtype: 'Solid',
+        runLabel: 'Solid'
     };
 
 // var currentFreq = gui.add( parameters, 'analysis' ).min(1).max(analysiscount).step(1).name('AnalysisScrubber').listen();
@@ -149,6 +152,11 @@ function init() {
             facesys.material.setValues({ wireframe: true });
         }
         renderer.render(scene, camera);
+    });
+
+    var runLabel = gui.add(parameters, 'runLabel', $('#data_label').text().split(',')).name('Run Label').listen();
+    runLabel.onChange(function (label) {
+        $.ajax('/admin/labels_select?label=' + label);
     });
 
     gui.open();
@@ -236,6 +244,7 @@ function load_data(nodeData, barData, elemData, defData, axialData) {
         console.log("axialData not defined");
         return;
     }
+    hasData = true;
 
     clearScene();
 
@@ -474,6 +483,9 @@ function animate() {
 }
 
 function render() {
+    if (! hasData) {
+        return;
+    }
     controls.update();
     renderer.render(scene, camera);
     stats.update();
