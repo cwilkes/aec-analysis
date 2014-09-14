@@ -301,9 +301,19 @@ function load_data(nodeData, barData, elemData, defData, axialData) {
 
         var pipeColor = new THREE.Color(axialData[b][2],axialData[b][3],axialData[b][4]);
         console.log(pipeColor);
-        var pipeMaterial = new THREE.MeshPhongMaterial( { ambient: 0x030303, color: pipeColor, specular: 0x009900, shininess: 30, shading: THREE.SmoothShading });
+        var pipeMaterial = new THREE.MeshPhongMaterial( { 
+            // light
+            specular: '#a9fcff',
+            // intermediate
+            color: '#00abb1',
+            // dark
+            emissive: pipeColor,//'#006063',
+            shininess: 100,
+            shading: THREE.SmoothShading });
+            //ambient: 0x030303, color: pipeColor, specular: 0x009900, shininess: 30, shading: THREE.SmoothShading });
 
         pipes[b] = new THREE.Mesh(pipeGeometry, pipeMaterial);
+        pipes[b].overdraw = true;
 
         pipes[b].position.x = vertex1.x;
         pipes[b].position.y = vertex1.y;
