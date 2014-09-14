@@ -52,7 +52,9 @@ def publish_label(socketio, label):
     log.info('tags: %s' % (tags, ))
     for tag in tags.keys():
         log.info('Emitting data for channel: %s data: %s', tag, tags[tag])
-        socketio.emit('data', dict(channel=tag, data=tags[tag]), namespace='/data')
+        real_key = redis_client.keys('/points/%s/%s/*' % (tag, tags[tag]))[0]
+        data=eval(redis_client.get(real_key))
+        socketio.emit('data', dict(channel=tag, data=data), namespace='/data')
     return tags
 
 
