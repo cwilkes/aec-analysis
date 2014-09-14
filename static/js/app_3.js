@@ -155,12 +155,41 @@ function init() {
 
 
 // lights
-    var ambient = new THREE.AmbientLight(0x101010);
-    scene.add(ambient);
 
-    var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(1, 1, 2).normalize();
-    scene.add(directionalLight);
+    //add spotlights
+    var spotLightA = new THREE.SpotLight(0xf2f2f2);
+    spotLightA.position.set(0, 1000000, 1000000);
+    scene.add(spotLightA);
+    spotLightA.castShadow = true;
+
+    var spotLightB = new THREE.SpotLight(0x8D8D8D);
+    spotLightB.position.set(1000000, 100000, 0);
+    spotLightB.castShadow = true;
+    scene.add(spotLightB);
+
+    var spotLightC = new THREE.SpotLight(0x666666);
+    spotLightC.position.set(0, 0, -1000000);
+    spotLightC.castShadow = true;
+    scene.add(spotLightC);
+
+    var spotLightD = new THREE.SpotLight(0x8D8D8D);
+    spotLightD.position.set(-1000000, 0, -1000000);
+    spotLightD.castShadow = true;
+    scene.add(spotLightD);
+
+    var spotLightE = new THREE.SpotLight(0x666666);
+    spotLightE.position.set(0, -1000000, 0);
+    spotLightE.castShadow = true;
+    scene.add(spotLightE);
+
+    // add ambient lighting
+    var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+    scene.add(ambientLight);
+
+    // add directional lighting
+    // var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    // directionalLight.position.set(1, 1, 2).normalize();
+    // scene.add(directionalLight);
 
 }
 
